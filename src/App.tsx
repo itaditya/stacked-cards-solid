@@ -1,5 +1,5 @@
 import { For, createMemo } from 'solid-js';
-import { Routes, Route, Link, useParams } from 'solid-app-router';
+import { Routes, Route, Link, useParams, useNavigate } from 'solid-app-router';
 import './styles.css';
 
 function Card(p) {
@@ -10,6 +10,7 @@ function Card(p) {
         '--card-index': p.index,
         '--card-last-index': p.total - p.index - 1,
       }}
+      onClick={p.onClick}
     >
       {p.children}
     </section>
@@ -17,6 +18,9 @@ function Card(p) {
 }
 
 function StackedForm() {
+  const navigate = useNavigate();
+  const params = useParams();
+
   const items = [
     {
       id: 'catalog',
@@ -49,16 +53,23 @@ function StackedForm() {
   ];
 
   const shownItems = createMemo(() => {
-    const params = useParams();
     const activeIndex = items.findIndex((item) => item.id === params.step);
 
     return items.slice(0, activeIndex + 1);
   });
 
+  function handleClick(item) {
+    navigate(`/shop/${item.id}`);
+  }
+
   return (
     <For each={shownItems()}>
       {(item, index) => (
-        <Card index={index()} total={shownItems().length}>
+        <Card
+          index={index()}
+          total={shownItems().length}
+          onClick={[handleClick, item]}
+        >
           {item.element}
         </Card>
       )}
