@@ -1,0 +1,32 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.container {
+  background-color: pink;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.card {
+  --offset-block-start: calc(var(--card-index) * 15px);
+  --offset-inline: calc(var(--card-last-index) * 10%);
+  --shade-color: calc(100% - var(--card-last-index) * 7%);
+
+  position: absolute;
+  border-radius: 6px;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  height: calc(100vh - var(--offset-block-start));
+  width: calc(100% - var(--offset-inline));
+  inset-block-start: var(--offset-block-start);
+  background-color: hsl(0deg 0% var(--shade-color));
+  text-align: center;
+}
